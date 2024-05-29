@@ -1,19 +1,19 @@
-declare module "cards.json" {
-    export type FateValueType = "damage" | "special" | "route";
-    export type FateValue = null | { type: FateValueType, count: number }
-    export type FateDestiny = "gold" | "red" | "grey"
+import * as deck from "./cards.json"
 
-    export type FateCard = {
-        id: number;
-        triangle: FateValue;
-        rectangle: FateValue;
-        hexagon: FateValue;
-        circle: FateValue;
-        destiny: FateDestiny
-    }
+export type FateValueType = "damage" | "special" | "route";
+export type FateValue = null | { type: FateValueType, count: number }
+export type FateDestiny = "gold" | "red" | "grey"
 
-    export default {
-        version: string,
-        cards: Array<FateCard>,
-    }
+export type FateCard = {
+    id: number;
+    triangle: FateValue;
+    rectangle: FateValue;
+    hexagon: FateValue;
+    circle: FateValue;
+    destiny: FateDestiny
+}
+
+export default deck as {
+    version: number,
+    cards: Array<FateCard>,
 }
