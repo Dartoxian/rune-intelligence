@@ -1,22 +1,44 @@
-import * as React from "react"
-import {
-  ChakraProvider,
-  Box,
-  Text,
-  Link,
-  VStack,
-  Code,
-  Grid,
-  theme, Flex,
-} from "@chakra-ui/react"
-import { ColorModeSwitcher } from "./ColorModeSwitcher"
-import { Logo } from "./Logo"
+import * as React from "react";
+import { ChakraProvider, Box, Flex, extendTheme } from "@chakra-ui/react";
+
+import { DeckProvider } from "./DeckProvider";
+import { CardGrid } from "./components/CardGrid";
+import { DeckSummary } from "./components/DeckSummary";
+import Fonts from "./fonts";
+import { DestinyOutcomeChart } from "./components/DestinyOutcomeChart";
+
+const runeTheme = extendTheme({
+  fonts: {
+    heading: `'Almendra', serif`,
+    body: `'Almendra', serif`,
+  },
+  config: {
+    initialColorMode: "dark",
+  },
+});
 
 export const App = () => (
-  <ChakraProvider theme={theme}>
-    <Flex flexDirection={"column"}>
-      <Box fontSize={"xl"}>Runeware Intelligence Platform</Box>
-      <Box flex={"1"}>blep</Box>
-    </Flex>
+  <ChakraProvider theme={runeTheme}>
+    <Fonts />
+    <DeckProvider>
+      <Flex flexDirection={"column"} p={"1rem"} h={"100vh"}>
+        <Box fontSize={"lg"} textAlign={"center"}>
+          Runewars Intelligence Platform
+        </Box>
+        <Flex flexDirection={"column"} flex={"1"}>
+          <Flex flex={"1"}>
+            <DestinyOutcomeChart />
+          </Flex>
+          <Flex flexDirection={"row"}>
+            <Box flex={"1"}>
+              <DeckSummary />
+            </Box>
+            <Box flex={"3"}>
+              <CardGrid />
+            </Box>
+          </Flex>
+        </Flex>
+      </Flex>
+    </DeckProvider>
   </ChakraProvider>
-)
+);

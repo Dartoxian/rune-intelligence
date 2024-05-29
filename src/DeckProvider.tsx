@@ -1,51 +1,40 @@
-import {createContext, PropsWithChildren, useCallback, useState} from "react";
+import {createContext, PropsWithChildren, useCallback, useContext, useState} from "react";
 import deck from "./data/cards";
 import {FateCard} from "./data/cards";
 
 
+type FateCardAndStatus = {
+    card: FateCard;
+    drawn: boolean;
+}
+
 type DeckProviderState = {
-    deckCards: FateCard[];
-    discardCards: FateCard[];
+    cards: FateCardAndStatus[];
     shuffleDeck: () => void;
-    drawCard: (cardId: number) => void;
-    replaceCard: (cardId: number) => void;
+    toggleCard: (cardId: number) => void;
 }
 
 const DeckContext = createContext<DeckProviderState>({
-    deckCards: [],
-    discardCards: [],
-    drawCard: () => null,
-    replaceCard: () => null,
+    cards: [],
+    toggleCard: () => null,
     shuffleDeck: () => null
 });
 
 export const DeckProvider = ({children}: PropsWithChildren) => {
-    const [{deckCards, discardCards}, setCards] = useState({deckCards: deck.cards, discardCards: [] as FateCard[]});
+    const [cards, setCards] = useState<FateCardAndStatus[]>(deck.cards.map(card => ({card, drawn: false})));
 
     const shuffleDeck = useCallback(() => {
-        setCards({deckCards: deck.cards, discardCards: []});
+        setCards(deck.cards.map(card => ({card, drawn: false})));
     }, []);
 
-    const replaceCard = useCallback((cardId: number) => {
-        setCards(({
-                      deckCards,
-                      discardCards
-                  }) => ({
-            deckCards: [...deckCards, deck.cards.find(card => card.id === cardId)!],
-            discardCards: discardCards.filter(card => card.id === cardId)
-        }))
-    }, [])
-
-    const drawCard = useCallback((cardId: number) => {
-        setCards(({
-                      deckCards,
-                      discardCards
-                  }) => ({
-            discardCards: [...discardCards, deck.cards.find(card => card.id === cardId)!],
-            deckCards: deckCards.filter(card => card.id === cardId)
-        }))
+    const toggleCard = useCallback((cardId: number) => {
+        setCards(cards => cards.map(card => card.card.id === cardId ? {...card, drawn: !card.drawn} : card));
     }, [])
 
     return <DeckContext.Provider
-        value={{deckCards, discardCards, drawCard, replaceCard, shuffleDeck}}>{children}</DeckContext.Provider>
+        value={{cards, toggleCard, shuffleDeck}}>{children}</DeckContext.Provider>
+}
+
+export const useDeck = () => {
+    return useContext(DeckContext)
 }
