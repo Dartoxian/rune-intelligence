@@ -1,5 +1,7 @@
 import { useDeck } from "../DeckProvider";
-import { Button, Grid, GridItem } from "@chakra-ui/react";
+import { Button, Grid, GridItem, Image } from "@chakra-ui/react";
+import { FateDestiny } from "../data/cards";
+import { useMemo } from "react";
 
 export const CardGrid = () => {
   const { cards } = useDeck();
@@ -24,8 +26,24 @@ const CardButton = ({ cardId }: CardButtonProps) => {
   const { card: fateCard, drawn } = cards.find((card) => card.card.id === cardId)!;
 
   return (
-    <Button w={"100%"} h={"3rem"} onClick={() => toggleCard(cardId)} colorScheme={drawn ? "orange" : "gray"}>
-      {cardId} {fateCard.destiny}
+    <Button
+      w={"100%"}
+      h={"3rem"}
+      onClick={() => toggleCard(cardId)}
+      colorScheme={drawn ? "gray" : "orange"}
+      bg={drawn ? undefined : "orange.700"}
+      fontSize={"1.3rem"}
+    >
+      <DestinyImage destiny={fateCard.destiny} />
+      {cardId}
     </Button>
   );
+};
+
+type DestinyImageProps = {
+  destiny: FateDestiny;
+};
+
+const DestinyImage = ({ destiny }: DestinyImageProps) => {
+  return <Image w={"15px"} marginRight={"8px"} src={`${process.env.PUBLIC_URL}/images/destiny-${destiny}.png`} />;
 };
