@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ChakraProvider, Box, Flex, extendTheme, Text } from "@chakra-ui/react";
+import { ChakraProvider, Box, Flex, extendTheme } from "@chakra-ui/react";
 
 import { DeckProvider } from "./DeckProvider";
 import { CardGrid } from "./components/CardGrid";

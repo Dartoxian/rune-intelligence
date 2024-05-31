@@ -72,14 +72,14 @@ export const RuneLog = () => {
   );
 };
 
-type RuneList = {
+type RuneListProps = {
   title: string;
   runes: string[];
   onDelete: (runeId: string) => void;
   onAdd: (runeId: string) => void;
 };
 
-const RuneList = ({ title, runes, onDelete, onAdd }: RuneList) => {
+const RuneList = ({ title, runes, onDelete, onAdd }: RuneListProps) => {
   return (
     <Card flex={"1"} variant={"outline"}>
       <CardHeader>

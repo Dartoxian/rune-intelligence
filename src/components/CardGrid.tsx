@@ -1,7 +1,6 @@
 import { useDeck } from "../DeckProvider";
 import { Button, Grid, GridItem, Image } from "@chakra-ui/react";
 import { FateDestiny } from "../data/cards";
-import { useMemo } from "react";
 
 export const CardGrid = () => {
   const { cards } = useDeck();

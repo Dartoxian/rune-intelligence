@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Flex,
   Image,
   Table,
@@ -13,7 +12,6 @@ import {
   Th,
   Thead,
   Tr,
-  useColorModeValue,
   useToken,
 } from "@chakra-ui/react";
 
