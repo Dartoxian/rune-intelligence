@@ -21,12 +21,12 @@ const runeTheme = extendTheme({
       variants: {
         simple: {
           td: {
-            paddingInlineStart: "2",
-            paddingInlineEnd: "2",
+            paddingInlineStart: "1",
+            paddingInlineEnd: "1",
           },
           th: {
-            paddingInlineStart: "2",
-            paddingInlineEnd: "2",
+            paddingInlineStart: "1",
+            paddingInlineEnd: "1",
           },
         },
       },

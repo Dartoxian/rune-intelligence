@@ -45,7 +45,7 @@ export const Destiny = () => {
     if (goldCount + greyCount === 0) {
       r.push(
         <>
-          It is <b>IMPOSSIBLE</b> non red card
+          It is <b>IMPOSSIBLE</b> to pull a non red card
         </>,
       );
     } else if ((goldCount + greyCount) / totalCount < 0.15) {
