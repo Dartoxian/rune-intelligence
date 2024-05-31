@@ -1,4 +1,4 @@
-import { createContext, PropsWithChildren, useCallback, useContext, useMemo, useState } from "react";
+import { createContext, PropsWithChildren, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import deck from "./data/cards";
 import { FateCard } from "./data/cards";
 
@@ -23,8 +23,22 @@ const DeckContext = createContext<DeckProviderState>({
   shuffleDeck: () => null,
 });
 
+const getInitCards = () => {
+  try {
+    return JSON.parse(localStorage.getItem("fateCards")!);
+  } catch (e: any) {
+    return deck.cards.map((card) => ({ card, drawn: false }));
+  }
+};
+
 export const DeckProvider = ({ children }: PropsWithChildren) => {
-  const [cards, setCards] = useState<FateCardAndStatus[]>(deck.cards.map((card) => ({ card, drawn: false })));
+  const [cards, setCards] = useState<FateCardAndStatus[]>(getInitCards());
+
+  useEffect(() => {}, []);
+
+  useEffect(() => {
+    localStorage.setItem("fateCards", JSON.stringify(cards));
+  }, [cards]);
 
   const shuffleDeck = useCallback(() => {
     setCards(deck.cards.map((card) => ({ card, drawn: false })));
