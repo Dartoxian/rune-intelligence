@@ -13,6 +13,8 @@ import {
   Th,
   Thead,
   Tr,
+  useColorModeValue,
+  useToken,
 } from "@chakra-ui/react";
 
 import * as React from "react";
@@ -84,6 +86,15 @@ export const Combat = () => {
           </>,
         );
       }
+      if (failureModification < -0.25) {
+        r.push(
+          <>
+            <Image display={"inline"} w={"24px"} src={`/images/${odd.combatType}.png`} /> is{" "}
+            {failureModification < -0.5 && <b>much </b>}
+            less likely to succeed.
+          </>,
+        );
+      }
     });
     return r;
   }, [odds]);
@@ -105,11 +116,11 @@ export const Combat = () => {
         </Text>
         <Table mb={"16px"}>
           <colgroup>
-            <col style={{ width: "14%" }} />
-            <col style={{ width: "21.5%" }} />
-            <col style={{ width: "21.5%" }} />
-            <col style={{ width: "21.5%" }} />
-            <col style={{ width: "21.5%" }} />
+            <col style={{ width: "10%" }} />
+            <col style={{ width: "22.5%", background: useToken("colors", "gray.900") }} />
+            <col style={{ width: "22.5%" }} />
+            <col style={{ width: "22.5%" }} />
+            <col style={{ width: "22.5%" }} />
           </colgroup>
           <Thead>
             <Tr>
@@ -166,7 +177,7 @@ type PercentDiffTagProps = {
   baseValue: number;
   invert?: boolean;
 };
-const PercentDiffTag = ({ value, baseValue }: PercentDiffTagProps) => {
+const PercentDiffTag = ({ invert, value, baseValue }: PercentDiffTagProps) => {
   const diff = value - baseValue;
 
   if (Math.abs(diff) < 0.05) {
@@ -174,7 +185,7 @@ const PercentDiffTag = ({ value, baseValue }: PercentDiffTagProps) => {
   }
 
   return (
-    <Tag colorScheme={diff < 0 ? "red" : "green"} size={"sm"}>
+    <Tag colorScheme={(invert ? diff > 0 : diff < 0) ? "red" : "green"} size={"sm"}>
       <TagLeftIcon as={diff < 0 ? TriangleDownIcon : TriangleUpIcon} />
       <TagLabel>{toPercent(Math.abs(diff))}</TagLabel>
     </Tag>
