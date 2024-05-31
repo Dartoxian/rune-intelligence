@@ -23,6 +23,7 @@ import { useDeck } from "../DeckProvider";
 import { ReactElement, useMemo } from "react";
 import { toPercent } from "./utils";
 import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
+import { RuneLog } from "./RuneLog";
 
 const combatTypes = ["triangle", "rectangle", "circle", "hexagon"] as const;
 type CombatType = (typeof combatTypes)[number];
@@ -167,7 +168,7 @@ export const Combat = () => {
           ))}
         </Box>
       </Flex>
-      <Button>Rune Locations</Button>
+      <RuneLog />
     </Flex>
   );
 };

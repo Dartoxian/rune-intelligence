@@ -38,11 +38,18 @@ export const App = () => (
   <ChakraProvider theme={runeTheme}>
     <Fonts />
     <DeckProvider>
-      <Flex flexDirection={"column"} p={"1rem"} h={"100vh"}>
-        <Box fontSize={"lg"} textAlign={"center"}>
+      <Flex flexDirection={"column"} h={"100vh"}>
+        <Box
+          fontSize={"lg"}
+          textAlign={"center"}
+          borderBottomWidth={"1px"}
+          borderStyle={"solid"}
+          borderColor={"gray.500"}
+          p={"0.5rem 0 0 0.5rem"}
+        >
           Runewars Intelligence Platform
         </Box>
-        <Flex flexDirection={"column"} flex={"1"}>
+        <Flex flexDirection={"column"} flex={"1"} p={"1rem"}>
           <Flex flex={"1"} gap={"20px"}>
             <Combat />
             <Destiny />
