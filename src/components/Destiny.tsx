@@ -74,7 +74,7 @@ export const Destiny = () => {
   }, [unseenCards, destinyData]);
 
   return (
-    <Flex flex={"1"} flexDirection={"column"}>
+    <Flex flex={"1"} flexDirection={"column"} bg={"gray.700"} m={"8px"} p={"8px"} borderRadius={"5px"}>
       <Text fontSize={"2xl"} textAlign={"center"}>
         Destiny
       </Text>
@@ -82,7 +82,7 @@ export const Destiny = () => {
         <DestinyOutcomeChart />
       </Box>
       <Box flex={"2"}>
-        <Box as={"ul"} fontSize={"xl"}>
+        <Box as={"ul"} fontSize={"xl"} paddingLeft={"30px"}>
           {statements.map((s, i) => (
             <Text as={"li"} key={i}>
               {s}

@@ -3,8 +3,7 @@ import * as React from "react";
 import { useDeck } from "../DeckProvider";
 import { useMemo } from "react";
 import { FateDestiny } from "../data/cards";
-
-const toPercent = (decimal: number) => `${(decimal * 100).toFixed(0)}%`;
+import { toPercent } from "./utils";
 
 export const DestinyOutcomeChart = () => {
   const { destinyData } = useDeck();

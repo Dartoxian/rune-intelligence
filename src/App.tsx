@@ -6,6 +6,7 @@ import { CardGrid } from "./components/CardGrid";
 import { DeckSummary } from "./components/DeckSummary";
 import Fonts from "./fonts";
 import { Destiny } from "./components/Destiny";
+import { Combat } from "./components/Combat";
 
 const runeTheme = extendTheme({
   fonts: {
@@ -14,6 +15,22 @@ const runeTheme = extendTheme({
   },
   config: {
     initialColorMode: "dark",
+  },
+  components: {
+    Table: {
+      variants: {
+        simple: {
+          td: {
+            paddingInlineStart: "3",
+            paddingInlineEnd: "3",
+          },
+          th: {
+            paddingInlineStart: "3",
+            paddingInlineEnd: "3",
+          },
+        },
+      },
+    },
   },
 });
 
@@ -26,8 +43,8 @@ export const App = () => (
           Runewars Intelligence Platform
         </Box>
         <Flex flexDirection={"column"} flex={"1"}>
-          <Flex flex={"1"}>
-            <Box flex={"1"}></Box>
+          <Flex flex={"1"} gap={"20px"}>
+            <Combat />
             <Destiny />
           </Flex>
           <Flex flexDirection={"row"}>
