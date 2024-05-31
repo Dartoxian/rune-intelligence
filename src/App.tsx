@@ -1,11 +1,11 @@
 import * as React from "react";
-import { ChakraProvider, Box, Flex, extendTheme } from "@chakra-ui/react";
+import { ChakraProvider, Box, Flex, extendTheme, Text } from "@chakra-ui/react";
 
 import { DeckProvider } from "./DeckProvider";
 import { CardGrid } from "./components/CardGrid";
 import { DeckSummary } from "./components/DeckSummary";
 import Fonts from "./fonts";
-import { DestinyOutcomeChart } from "./components/DestinyOutcomeChart";
+import { Destiny } from "./components/Destiny";
 
 const runeTheme = extendTheme({
   fonts: {
@@ -27,7 +27,8 @@ export const App = () => (
         </Box>
         <Flex flexDirection={"column"} flex={"1"}>
           <Flex flex={"1"}>
-            <DestinyOutcomeChart />
+            <Box flex={"1"}></Box>
+            <Destiny />
           </Flex>
           <Flex flexDirection={"row"}>
             <Box flex={"1"}>

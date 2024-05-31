@@ -4,43 +4,17 @@ import { useDeck } from "../DeckProvider";
 import { useMemo } from "react";
 import { FateDestiny } from "../data/cards";
 
-const toPercent = (decimal: number, fixed = 0) => `${(decimal * 100).toFixed(fixed)}%`;
+const toPercent = (decimal: number) => `${(decimal * 100).toFixed(0)}%`;
 
 export const DestinyOutcomeChart = () => {
-  const { cards } = useDeck();
-  const unseenCards = useMemo(() => cards.filter((c) => !c.drawn), [cards]);
-  const data = useMemo(() => {
-    const redCards = unseenCards.filter((card) => card.card.destiny === "red").length;
-    const greyCards = unseenCards.filter((card) => card.card.destiny === "grey").length;
-    const goldCards = unseenCards.filter((card) => card.card.destiny === "gold").length;
-
-    // Consider spending up to 7 influence to find the best destiny
-    const ithOutcomes = [{ influenceSpent: 0, redBest: 1, greyBest: 0, goldBest: 0 }];
-    for (let i = 1; i <= 7; i += 1) {
-      ithOutcomes.push({
-        influenceSpent: i,
-        // Every card so far is red and the next card is red
-        redBest: (ithOutcomes[i - 1].redBest * (redCards - i + 1)) / (unseenCards.length - i + 1),
-        // Either gray is already the best and the next card is not gold, or red is the best and the next card is gray
-        greyBest:
-          (ithOutcomes[i - 1].greyBest * (unseenCards.length - i + 1 - goldCards)) / (unseenCards.length - i + 1) +
-          (ithOutcomes[i - 1].redBest * greyCards) / (unseenCards.length - i + 1),
-        // Either gold is already the best, or red or gray is the best and the next card is gold
-        goldBest:
-          ithOutcomes[i - 1].goldBest +
-          ((ithOutcomes[i - 1].redBest + ithOutcomes[i - 1].greyBest) * goldCards) / (unseenCards.length - i + 1),
-      });
-    }
-
-    return ithOutcomes;
-  }, [unseenCards]);
+  const { destinyData } = useDeck();
 
   return (
     <ResponsiveContainer width="100%" height="100%">
       <AreaChart
         width={500}
         height={400}
-        data={data}
+        data={destinyData.filter((d) => d.influenceSpent <= 7)}
         stackOffset="expand"
         margin={{
           top: 10,
@@ -64,7 +38,7 @@ export const DestinyOutcomeChart = () => {
 const getPercent = (value: number, total: number) => {
   const ratio = total > 0 ? value / total : 0;
 
-  return toPercent(ratio, 2);
+  return toPercent(ratio);
 };
 
 const renderTooltipContent = (o: TooltipProps<number, FateDestiny>) => {
