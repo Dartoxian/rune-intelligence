@@ -25,7 +25,11 @@ const DeckContext = createContext<DeckProviderState>({
 
 const getInitCards = () => {
   try {
-    return JSON.parse(localStorage.getItem("fateCards")!);
+    const storage = localStorage.getItem("fateCards");
+    if (!storage) {
+      throw new Error("missing fate");
+    }
+    return JSON.parse(storage);
   } catch (e: any) {
     return deck.cards.map((card) => ({ card, drawn: false }));
   }

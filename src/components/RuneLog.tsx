@@ -21,7 +21,11 @@ import { useEffect, useState } from "react";
 
 const getInit = (loc: string) => {
   try {
-    return JSON.parse(localStorage.getItem(loc)!);
+    const storedValue = localStorage.getItem(loc);
+    if (!storedValue) {
+      throw Error(`Missing rune ${loc}`);
+    }
+    return JSON.parse(storedValue);
   } catch (err: any) {
     return [];
   }
