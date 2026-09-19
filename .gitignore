@@ -9,7 +9,7 @@
 /coverage
 
 # production
-/build
+/dist
 
 # misc
 .DS_Store
@@ -24,3 +24,6 @@ yarn-error.log*
 
 *.iml
 .idea/*
+
+# local dev server config
+.claude/launch.json

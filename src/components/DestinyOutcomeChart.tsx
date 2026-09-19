@@ -1,5 +1,4 @@
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, TooltipProps, XAxis, YAxis } from "recharts";
-import * as React from "react";
 import { useDeck } from "../DeckProvider";
 import { FateDestiny } from "../data/cards";
 import { toPercent } from "./utils";

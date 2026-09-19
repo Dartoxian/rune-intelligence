@@ -1,6 +1,5 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { DestinyOutcomeChart } from "./DestinyOutcomeChart";
-import * as React from "react";
 import { ReactElement, useMemo } from "react";
 import { useDeck } from "../DeckProvider";
 

@@ -1,4 +1,3 @@
-import * as React from "react";
 import { ChakraProvider, Box, Flex, extendTheme } from "@chakra-ui/react";
 
 import { DeckProvider } from "./DeckProvider";

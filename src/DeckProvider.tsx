@@ -1,6 +1,7 @@
 import { createContext, PropsWithChildren, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import deck from "./data/cards";
-import { FateCard } from "./data/cards";
+import type { FateCard } from "./data/cards";
+import { destinyOutcomes, DestinyOutcome } from "./destinyOdds";
 
 type FateCardAndStatus = {
   card: FateCard;
@@ -10,7 +11,7 @@ type FateCardAndStatus = {
 type DeckProviderState = {
   cards: FateCardAndStatus[];
   unseenCards: FateCardAndStatus[];
-  destinyData: { influenceSpent: number; goldBest: number; redBest: number; greyBest: number }[];
+  destinyData: DestinyOutcome[];
   shuffleDeck: () => void;
   toggleCard: (cardId: number) => void;
 };
@@ -23,29 +24,29 @@ const DeckContext = createContext<DeckProviderState>({
   shuffleDeck: () => null,
 });
 
-const getInitCards = () => {
-  try {
-    const storage = localStorage.getItem("fateCards");
-    if (!storage) {
-      throw new Error("missing fate");
+const freshDeck = (): FateCardAndStatus[] => deck.cards.map((card) => ({ card, drawn: false }));
+
+const getInitCards = (): FateCardAndStatus[] => {
+  const stored = localStorage.getItem("fateCards");
+  if (stored) {
+    try {
+      return JSON.parse(stored) as FateCardAndStatus[];
+    } catch {
+      // Unreadable storage just means we start from a full deck.
     }
-    return JSON.parse(storage);
-  } catch (e: any) {
-    return deck.cards.map((card) => ({ card, drawn: false }));
   }
+  return freshDeck();
 };
 
 export const DeckProvider = ({ children }: PropsWithChildren) => {
-  const [cards, setCards] = useState<FateCardAndStatus[]>(getInitCards());
-
-  useEffect(() => {}, []);
+  const [cards, setCards] = useState<FateCardAndStatus[]>(getInitCards);
 
   useEffect(() => {
     localStorage.setItem("fateCards", JSON.stringify(cards));
   }, [cards]);
 
   const shuffleDeck = useCallback(() => {
-    setCards(deck.cards.map((card) => ({ card, drawn: false })));
+    setCards(freshDeck());
   }, []);
 
   const toggleCard = useCallback((cardId: number) => {
@@ -54,30 +55,7 @@ export const DeckProvider = ({ children }: PropsWithChildren) => {
 
   const unseenCards = useMemo(() => cards.filter((c) => !c.drawn), [cards]);
 
-  const destinyData = useMemo(() => {
-    const redCards = unseenCards.filter((card) => card.card.destiny === "red").length;
-    const greyCards = unseenCards.filter((card) => card.card.destiny === "grey").length;
-    const goldCards = unseenCards.filter((card) => card.card.destiny === "gold").length;
-
-    const ithOutcomes = [{ influenceSpent: 0, redBest: 1, greyBest: 0, goldBest: 0 }];
-    for (let i = 1; i <= unseenCards.length; i += 1) {
-      ithOutcomes.push({
-        influenceSpent: i,
-        // Every card so far is red and the next card is red
-        redBest: (ithOutcomes[i - 1].redBest * (redCards - i + 1)) / (unseenCards.length - i + 1),
-        // Either gray is already the best and the next card is not gold, or red is the best and the next card is gray
-        greyBest:
-          (ithOutcomes[i - 1].greyBest * (unseenCards.length - i + 1 - goldCards)) / (unseenCards.length - i + 1) +
-          (ithOutcomes[i - 1].redBest * greyCards) / (unseenCards.length - i + 1),
-        // Either gold is already the best, or red or gray is the best and the next card is gold
-        goldBest:
-          ithOutcomes[i - 1].goldBest +
-          ((ithOutcomes[i - 1].redBest + ithOutcomes[i - 1].greyBest) * goldCards) / (unseenCards.length - i + 1),
-      });
-    }
-
-    return ithOutcomes;
-  }, [unseenCards]);
+  const destinyData = useMemo(() => destinyOutcomes(unseenCards.map((c) => c.card)), [unseenCards]);
 
   return (
     <DeckContext.Provider value={{ cards, unseenCards, destinyData, toggleCard, shuffleDeck }}>
