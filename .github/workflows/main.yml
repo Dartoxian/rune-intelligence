@@ -1,38 +1,32 @@
 name: CI
 
 on:
-  # Triggers the workflow on push or pull request events but only for the master branch
   push:
-    branches: [ main ]
+    branches: [main]
+  pull_request:
 
 jobs:
-  # This workflow contains a single job called "build"
-  release:
-    # The type of runner that the job will run on
+  check:
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version-file: .node-version
+          cache: npm
 
       - name: Install
-        run: npm install
+        run: npm ci
+
+      - name: Format
+        run: npm run format:check
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Test
+        run: npm test
 
       - name: Build
-        run: |
-          npm run build
-          docker build -t europe-west2-docker.pkg.dev/propane-avatar-327810/dartoxia/runewars-nginx .
-
-      - name: Login to GAR
-        uses: docker/login-action@v1
-        with:
-          registry: europe-west2-docker.pkg.dev
-          username: _json_key
-          password: ${{ secrets.GCP_CI }}
-
-      - name: Push new image
-        run: docker push europe-west2-docker.pkg.dev/propane-avatar-327810/dartoxia/runewars-nginx
+        run: npm run build

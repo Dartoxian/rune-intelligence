@@ -19,23 +19,23 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
-const getInit = (loc: string) => {
-  try {
-    const storedValue = localStorage.getItem(loc);
-    if (!storedValue) {
-      throw Error(`Missing rune ${loc}`);
+const getInit = (loc: string): string[] => {
+  const storedValue = localStorage.getItem(loc);
+  if (storedValue) {
+    try {
+      return JSON.parse(storedValue) as string[];
+    } catch {
+      // Unreadable storage just means we start with an empty log.
     }
-    return JSON.parse(storedValue);
-  } catch (err: any) {
-    return [];
   }
+  return [];
 };
 
 export const RuneLog = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const [runes, setRunes] = useState<string[]>(getInit("runes"));
-  const [blanks, setBlanks] = useState<string[]>(getInit("blanks"));
+  const [runes, setRunes] = useState<string[]>(() => getInit("runes"));
+  const [blanks, setBlanks] = useState<string[]>(() => getInit("blanks"));
 
   useEffect(() => {
     localStorage.setItem("runes", JSON.stringify(runes));

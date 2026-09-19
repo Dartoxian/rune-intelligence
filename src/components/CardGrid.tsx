@@ -44,5 +44,5 @@ type DestinyImageProps = {
 };
 
 const DestinyImage = ({ destiny }: DestinyImageProps) => {
-  return <Image w={"15px"} marginRight={"8px"} src={`${process.env.PUBLIC_URL}/images/destiny-${destiny}.png`} />;
+  return <Image w={"15px"} marginRight={"8px"} src={`/images/destiny-${destiny}.png`} />;
 };

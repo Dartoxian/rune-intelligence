@@ -15,7 +15,6 @@ import {
   useToken,
 } from "@chakra-ui/react";
 
-import * as React from "react";
 import deck from "../data/cards";
 import { useDeck } from "../DeckProvider";
 import { ReactElement, useMemo } from "react";
@@ -44,31 +43,27 @@ export const Combat = () => {
   const odds = useMemo(() => {
     const totalCards = baseDeck.length;
     const totalUnseen = unseenCards.length;
-    return combatTypes.map(
-      (combatType): CombatOdds => ({
-        combatType,
-        blank: unseenCards.filter(({ card }) => card[combatType] === null).length / totalUnseen,
-        blankBase: baseDeck.filter((card) => card[combatType] === null).length / totalCards,
-        damage:
-          unseenCards.filter(({ card }) => card[combatType] !== null && card[combatType]!.type === "damage").length /
-          totalUnseen,
-        damageBase:
-          baseDeck.filter((card) => card[combatType] !== null && card[combatType]!.type === "damage").length /
-          totalCards,
-        route:
-          unseenCards.filter(({ card }) => card[combatType] !== null && card[combatType]!.type === "route").length /
-          totalUnseen,
-        routeBase:
-          baseDeck.filter((card) => card[combatType] !== null && card[combatType]!.type === "route").length /
-          totalCards,
-        special:
-          unseenCards.filter(({ card }) => card[combatType] !== null && card[combatType]!.type === "special").length /
-          totalUnseen,
-        specialBase:
-          baseDeck.filter((card) => card[combatType] !== null && card[combatType]!.type === "special").length /
-          totalCards,
-      }),
-    );
+    return combatTypes.map((combatType): CombatOdds => ({
+      combatType,
+      blank: unseenCards.filter(({ card }) => card[combatType] === null).length / totalUnseen,
+      blankBase: baseDeck.filter((card) => card[combatType] === null).length / totalCards,
+      damage:
+        unseenCards.filter(({ card }) => card[combatType] !== null && card[combatType]!.type === "damage").length /
+        totalUnseen,
+      damageBase:
+        baseDeck.filter((card) => card[combatType] !== null && card[combatType]!.type === "damage").length / totalCards,
+      route:
+        unseenCards.filter(({ card }) => card[combatType] !== null && card[combatType]!.type === "route").length /
+        totalUnseen,
+      routeBase:
+        baseDeck.filter((card) => card[combatType] !== null && card[combatType]!.type === "route").length / totalCards,
+      special:
+        unseenCards.filter(({ card }) => card[combatType] !== null && card[combatType]!.type === "special").length /
+        totalUnseen,
+      specialBase:
+        baseDeck.filter((card) => card[combatType] !== null && card[combatType]!.type === "special").length /
+        totalCards,
+    }));
   }, [unseenCards]);
 
   const statements = useMemo(() => {
