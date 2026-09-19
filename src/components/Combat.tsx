@@ -48,21 +48,20 @@ export const Combat = () => {
       blank: unseenCards.filter(({ card }) => card[combatType] === null).length / totalUnseen,
       blankBase: baseDeck.filter((card) => card[combatType] === null).length / totalCards,
       damage:
-        unseenCards.filter(({ card }) => card[combatType] !== null && card[combatType]!.type === "damage").length /
+        unseenCards.filter(({ card }) => card[combatType] !== null && card[combatType].type === "damage").length /
         totalUnseen,
       damageBase:
-        baseDeck.filter((card) => card[combatType] !== null && card[combatType]!.type === "damage").length / totalCards,
+        baseDeck.filter((card) => card[combatType] !== null && card[combatType].type === "damage").length / totalCards,
       route:
-        unseenCards.filter(({ card }) => card[combatType] !== null && card[combatType]!.type === "route").length /
+        unseenCards.filter(({ card }) => card[combatType] !== null && card[combatType].type === "route").length /
         totalUnseen,
       routeBase:
-        baseDeck.filter((card) => card[combatType] !== null && card[combatType]!.type === "route").length / totalCards,
+        baseDeck.filter((card) => card[combatType] !== null && card[combatType].type === "route").length / totalCards,
       special:
-        unseenCards.filter(({ card }) => card[combatType] !== null && card[combatType]!.type === "special").length /
+        unseenCards.filter(({ card }) => card[combatType] !== null && card[combatType].type === "special").length /
         totalUnseen,
       specialBase:
-        baseDeck.filter((card) => card[combatType] !== null && card[combatType]!.type === "special").length /
-        totalCards,
+        baseDeck.filter((card) => card[combatType] !== null && card[combatType].type === "special").length / totalCards,
     }));
   }, [unseenCards]);
 
@@ -100,7 +99,7 @@ export const Combat = () => {
         flexDirection={"column"}
         borderWidth={"2px"}
         borderStyle={"solid"}
-        borderColor={"gray.=800"}
+        borderColor={"gray.500"}
         m={"8px"}
         p={"8px"}
         borderRadius={"5px"}
