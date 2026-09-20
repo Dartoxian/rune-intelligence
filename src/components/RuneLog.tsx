@@ -116,11 +116,10 @@ const LocationInput = ({ onSubmit }: LocationInputProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [value, setValue] = useState("");
 
-  useEffect(() => {
-    if (!isOpen) {
-      setValue("");
-    }
-  }, [isOpen]);
+  const handleOpen = () => {
+    setValue("");
+    onOpen();
+  };
 
   const handleSubmit = () => {
     onSubmit(value);
@@ -133,7 +132,7 @@ const LocationInput = ({ onSubmit }: LocationInputProps) => {
 
   return (
     <>
-      <Button colorScheme={"green"} onClick={onOpen}>
+      <Button colorScheme={"green"} onClick={handleOpen}>
         Add
       </Button>
       <Modal isOpen={isOpen} onClose={onClose} size={"3xl"}>

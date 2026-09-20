@@ -1,7 +1,11 @@
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, TooltipProps, XAxis, YAxis } from "recharts";
+import { Box, Text } from "@chakra-ui/react";
 import { useDeck } from "../DeckProvider";
-import { FateDestiny } from "../data/cards";
 import { toPercent } from "./utils";
+
+const RED = "#d10f0f";
+const GREY = "#878787";
+const GOLD = "#d1ba0f";
 
 export const DestinyOutcomeChart = () => {
   const { destinyData } = useDeck();
@@ -9,8 +13,6 @@ export const DestinyOutcomeChart = () => {
   return (
     <ResponsiveContainer width="100%" height="100%">
       <AreaChart
-        width={500}
-        height={400}
         data={destinyData.filter((d) => d.influenceSpent <= 7)}
         stackOffset="expand"
         margin={{
@@ -24,34 +26,35 @@ export const DestinyOutcomeChart = () => {
         <XAxis dataKey="influenceSpent" />
         <YAxis tickFormatter={toPercent} />
         <Tooltip content={renderTooltipContent} />
-        <Area type="monotone" dataKey="redBest" stackId="1" stroke="#d10f0f" fill="#d10f0f" />
-        <Area type="monotone" dataKey="greyBest" stackId="1" stroke="#878787" fill="#878787" />
-        <Area type="monotone" dataKey="goldBest" stackId="1" stroke="#d1ba0f" fill="#d1ba0f" />
+        <Area name="Red" type="monotone" dataKey="redBest" stackId="1" stroke={RED} fill={RED} />
+        <Area name="Grey" type="monotone" dataKey="greyBest" stackId="1" stroke={GREY} fill={GREY} />
+        <Area name="Gold" type="monotone" dataKey="goldBest" stackId="1" stroke={GOLD} fill={GOLD} />
       </AreaChart>
     </ResponsiveContainer>
   );
 };
 
-const getPercent = (value: number, total: number) => {
-  const ratio = total > 0 ? value / total : 0;
+const getPercent = (value: number, total: number) => toPercent(total > 0 ? value / total : 0);
 
-  return toPercent(ratio);
-};
-
-const renderTooltipContent = (o: TooltipProps<number, FateDestiny>) => {
-  const { payload, label } = o;
-  const total = payload!.reduce((result, entry) => result + entry.value!, 0);
+const renderTooltipContent = (props: TooltipProps<number, string>) => {
+  const entries = props.payload ?? [];
+  // recharts types `label` as `any`; narrow it rather than trusting it.
+  const rawLabel: unknown = props.label;
+  const influenceSpent = typeof rawLabel === "number" ? rawLabel : undefined;
+  const total = entries.reduce((result, entry) => result + (entry.value ?? 0), 0);
 
   return (
-    <div className="customized-tooltip-content">
-      <p className="total">{`${label} Influence`}</p>
-      <ul className="list">
-        {payload!.map((entry, index) => (
-          <li key={`item-${index}`} style={{ color: entry.color }}>
-            {`${entry.name}: ${getPercent(entry.value!, total)}`}
-          </li>
+    <Box bg={"gray.800"} borderColor={"gray.600"} borderWidth={"1px"} borderRadius={"5px"} px={"12px"} py={"8px"}>
+      <Text fontWeight={"bold"} mb={"2px"}>
+        {influenceSpent === undefined ? "Best destiny" : `${influenceSpent} influence spent`}
+      </Text>
+      <Box as={"ul"} listStyleType={"none"}>
+        {entries.map((entry) => (
+          <Text as={"li"} key={entry.name} color={entry.color}>
+            {`${entry.name}: ${getPercent(entry.value ?? 0, total)}`}
+          </Text>
         ))}
-      </ul>
-    </div>
+      </Box>
+    </Box>
   );
 };

@@ -3,7 +3,6 @@ import { ChakraProvider, Box, Flex, extendTheme } from "@chakra-ui/react";
 import { DeckProvider } from "./DeckProvider";
 import { CardGrid } from "./components/CardGrid";
 import { DeckSummary } from "./components/DeckSummary";
-import Fonts from "./fonts";
 import { Destiny } from "./components/Destiny";
 import { Combat } from "./components/Combat";
 
@@ -35,7 +34,6 @@ const runeTheme = extendTheme({
 
 export const App = () => (
   <ChakraProvider theme={runeTheme}>
-    <Fonts />
     <DeckProvider>
       <Flex flexDirection={"column"} h={"100vh"}>
         <Box

@@ -11,6 +11,7 @@ Requires the Node version in `.node-version` (22).
 npm ci
 npm run dev        # vite dev server
 npm test           # vitest
+npm run lint       # eslint
 npm run typecheck  # tsc --noEmit
 npm run build      # typecheck + production build into dist/
 npm run preview    # serve the production build
